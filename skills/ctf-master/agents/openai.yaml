@@ -1,0 +1,4 @@
+interface:
+  display_name: "CTF Master"
+  short_description: "Route CTF solving with state and evidence"
+  default_prompt: "Use $ctf-master to triage this CTF challenge, route the right skill, and maintain evidence-backed state."

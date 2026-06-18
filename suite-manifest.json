@@ -1,0 +1,98 @@
+{
+  "name": "ctf-agent-skills",
+  "version": "0.38.0",
+  "purpose": "Evidence-driven Agent skills for legal CTFs, authorized labs, and isolated local challenge solving.",
+  "skills": [
+    {
+      "name": "ctf-master",
+      "role": "master",
+      "path": "skills/ctf-master",
+      "must_exist": ["SKILL.md", "agents/openai.yaml", "references/state-schema.md", "references/acceptance-gates.md", "references/phase-gates.md", "references/deep-topic-router.md", "scripts/init_state.py", "scripts/update_profile.py", "scripts/update_state.py", "scripts/validate_state.py", "scripts/gate_state.py", "scripts/checkpoint_state.py", "scripts/triage_artifacts.py", "scripts/route_topic.py", "scripts/redact_text.py"]
+    },
+    {
+      "name": "ctf-web",
+      "role": "category",
+      "path": "skills/ctf-web",
+      "must_exist": ["SKILL.md", "agents/openai.yaml", "references/web-triage.md", "references/browser-workflow.md"]
+    },
+    {
+      "name": "ctf-pwn-rev",
+      "role": "category",
+      "path": "skills/ctf-pwn-rev",
+      "must_exist": ["SKILL.md", "agents/openai.yaml", "references/pwn-rev-triage.md", "references/exploit-script-template.py"]
+    },
+    {
+      "name": "ctf-forensics-crypto",
+      "role": "category",
+      "path": "skills/ctf-forensics-crypto",
+      "must_exist": ["SKILL.md", "agents/openai.yaml", "references/forensics-triage.md", "references/crypto-triage.md"]
+    },
+    {
+      "name": "ctf-specialty",
+      "role": "category",
+      "path": "skills/ctf-specialty",
+      "must_exist": ["SKILL.md", "agents/openai.yaml", "references/specialty-triage.md"]
+    },
+    {
+      "name": "ctf-tool-preflight",
+      "role": "support",
+      "path": "skills/ctf-tool-preflight",
+      "must_exist": ["SKILL.md", "agents/openai.yaml", "references/tool-cards.md", "references/mcp-adapters.md", "scripts/ctf_preflight.py"]
+    },
+    {
+      "name": "ctf-knowledge",
+      "role": "support",
+      "path": "skills/ctf-knowledge",
+      "must_exist": ["SKILL.md", "agents/openai.yaml", "references/source-matrix.md", "references/distillation-rules.md", "scripts/source_matrix.py"]
+    },
+    {
+      "name": "ctf-anti-injection",
+      "role": "support",
+      "path": "skills/ctf-anti-injection",
+      "must_exist": ["SKILL.md", "agents/openai.yaml", "references/untrusted-content.md", "scripts/scan_untrusted_text.py"]
+    },
+    {
+      "name": "ctf-handoff-report",
+      "role": "support",
+      "path": "skills/ctf-handoff-report",
+      "must_exist": ["SKILL.md", "agents/openai.yaml", "references/handoff-template.md", "references/writeup-template.md", "scripts/render_handoff.py", "scripts/render_writeup.py", "scripts/render_reflection.py", "scripts/finalize_run.py"]
+    }
+  ],
+  "validation": {
+    "suite": "python3 scripts/validate_suite.py --smoke",
+    "release_gate": "python3 scripts/release_gate.py --json",
+    "completion_audit": "python3 scripts/audit_completion.py --json",
+    "quality_audit": "python3 scripts/audit_quality.py --json",
+    "pressure_audit": "python3 scripts/audit_pressure.py --json",
+    "category_coverage_audit": "python3 scripts/audit_category_coverage.py --json",
+    "evidence_contract_audit": "python3 scripts/audit_evidence_contract.py --json",
+    "release_consistency_audit": "python3 scripts/audit_release_consistency.py --json",
+    "source_matrix_audit": "python3 scripts/audit_source_matrix.py --json",
+    "forward_integrity_audit": "python3 scripts/audit_forward_integrity.py --json",
+    "fresh_agent_readiness_audit": "python3 scripts/audit_fresh_agent_readiness.py /tmp/ctf-forward-run-smoke/forward-run-workspace.json --json",
+    "forward_run_init": "python3 scripts/init_forward_run.py --run-id smoke-forward-init --out-dir /tmp/ctf-forward-run-smoke --json",
+    "forward_rubric_template": "python3 scripts/render_forward_rubric.py --run-id smoke-forward-rubric --out /tmp/ctf-forward-rubric.json --json",
+    "forward_handoff_render": "python3 scripts/render_forward_handoff.py /tmp/ctf-forward-run-smoke/forward-run-workspace.json --out /tmp/ctf-forward-handoff.md --json",
+    "fresh_agent_packet_export": "python3 scripts/export_fresh_agent_packet.py /tmp/ctf-forward-run-smoke/forward-run-workspace.json --out-dir /tmp/ctf-fresh-agent-packet --json",
+    "fresh_agent_packet_audit": "python3 scripts/audit_fresh_agent_packet.py /tmp/ctf-fresh-agent-packet --json",
+    "fresh_agent_launch_prompt_render": "python3 scripts/render_fresh_agent_launch_prompt.py /tmp/ctf-fresh-agent-packet --out /tmp/ctf-fresh-agent-launch-prompt.md --json",
+    "forward_run_finalize": "python3 scripts/finalize_forward_run.py /path/to/fresh-agent-run-record.json --json",
+    "agent_metadata_audit": "python3 scripts/audit_agent_metadata.py --json",
+    "trigger_audit": "python3 scripts/audit_triggers.py --json",
+    "demo": "python3 scripts/run_demo_solve.py --all --out-dir /tmp/ctf-agent-skills-demo",
+    "traceability": "python3 scripts/audit_traceability.py --json",
+    "state_validation": "python3 skills/ctf-master/scripts/validate_state.py benchmarks/runs/cybench-primary-knowledge/ctf-state.json --json",
+    "profile_update": "python3 skills/ctf-master/scripts/update_profile.py --state /tmp/ctf-state.json --scope-status local_only --category-inferred web --json",
+    "phase_gates": "python3 skills/ctf-master/scripts/gate_state.py benchmarks/runs/cybench-primary-knowledge/ctf-state.json --require-ready report --strict-artifacts --json",
+    "checkpoint": "python3 skills/ctf-master/scripts/checkpoint_state.py benchmarks/runs/cybench-primary-knowledge/ctf-state.json --json",
+    "reflection": "python3 skills/ctf-handoff-report/scripts/render_reflection.py benchmarks/runs/cybench-primary-knowledge/ctf-state.json --json",
+    "finalize_run": "python3 skills/ctf-handoff-report/scripts/finalize_run.py benchmarks/runs/cybench-primary-knowledge/ctf-state.json --out-dir /tmp/ctf-agent-skills-finalize --json --strict-artifacts",
+    "forward_suite": "python3 scripts/run_forward_suite.py --list --json",
+    "forward_run_verify": "python3 scripts/verify_forward_run.py /path/to/fresh-agent-run-record.json --json",
+    "benchmark_init": "python3 scripts/init_benchmark_run.py --benchmark synthetic --challenge-id smoke --title Smoke --category web --out-dir /tmp/ctf-benchmark-smoke --json",
+    "benchmark_verify": "python3 scripts/verify_benchmark_run.py benchmarks/runs/cybench-primary-knowledge --json",
+    "install_dry_run": "./install.sh --codex --dry-run",
+    "official_skill_validator": "for d in skills/ctf-*; do python3 /path/to/quick_validate.py \"$d\"; done"
+  },
+  "forward_tests": "forward-tests/scenarios"
+}

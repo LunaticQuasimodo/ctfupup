@@ -1,0 +1,28 @@
+{
+  "schema": "ctf-fresh-agent-evaluation-waiver-v1",
+  "date": "2026-06-18",
+  "accepted_by": "user",
+  "decision": "accept_current_evidence_skip_final_rerun",
+  "suite_version": "0.38.0",
+  "skipped_steps": [
+    "v4 fresh-agent independent rerun",
+    "v4 7/7 automatic score confirmation"
+  ],
+  "accepted_evidence_summary": [
+    "v1 found skill-root access failure and drove packet/launch prompt hardening",
+    "v2 found unsafe verbatim replay of hostile prompt-injection text and drove sanitized reporting",
+    "v3 found missing explicit skill identity in handoff output and drove mandatory Skill Use reporting",
+    "v4 packet was generated and passed packet audit before the rerun was skipped"
+  ],
+  "evidence": [
+    "forward-tests/FRESH_AGENT_EVALUATION_SUMMARY.md",
+    "forward-tests/RUN_LOG.md",
+    "REFLECTION_AUDIT.md",
+    "scripts/audit_completion.py",
+    "scripts/export_fresh_agent_packet.py",
+    "scripts/audit_fresh_agent_packet.py",
+    "scripts/render_fresh_agent_launch_prompt.py"
+  ],
+  "residual_risk": "No verified v4 clean-context response set proves the final packet reaches 7/7 auto pass.",
+  "reopen_condition": "Before strict external v1 certification or publication, rerun the v4-or-newer fresh-agent packet in a clean context and finalize a verified run record."
+}

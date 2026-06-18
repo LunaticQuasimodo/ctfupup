@@ -1,0 +1,4 @@
+interface:
+  display_name: "CTF Tool Preflight"
+  short_description: "Check CTF tools and tool-call safety"
+  default_prompt: "Use $ctf-tool-preflight to check required tools, define ToolCards, and classify tool failures."

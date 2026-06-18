@@ -1,0 +1,639 @@
+{
+  "schema": "ctf-agent-skills-traceability-v1",
+  "updated_at": "2026-06-18",
+  "status_values": ["covered", "partial", "open"],
+  "priority_values": ["current_gate", "v1_target", "future"],
+  "requirements": [
+    {
+      "id": "REQ-BOUNDARY-001",
+      "source": "attachment.safety-boundary",
+      "requirement": "Limit all workflows to legal CTFs, authorized labs, authorized research, and isolated local environments; include misuse and scope boundaries.",
+      "priority": "current_gate",
+      "status": "covered",
+      "evidence": [
+        {"path": "skills/ctf-master/SKILL.md", "contains": ["legal CTF", "authorized lab", "local isolated"]},
+        {"path": "skills/ctf-master/references/acceptance-gates.md", "contains": ["Authorization", "scope"]},
+        {"path": "SKILL_SUITE.md", "contains": ["legal CTFs", "isolated local experiments"]}
+      ],
+      "notes": "Safety boundary is repeated at suite and master-entry levels."
+    },
+    {
+      "id": "REQ-TOOLS-001",
+      "source": "attachment.core-question-1",
+      "requirement": "Reduce wasted time from tool configuration, failed calls, long output, and repeated attempts.",
+      "priority": "current_gate",
+      "status": "covered",
+      "evidence": [
+        {"path": "skills/ctf-tool-preflight/SKILL.md", "contains": ["preflight", "ToolCard"]},
+        {"path": "skills/ctf-tool-preflight/references/tool-cards.md", "contains": ["Failure", "Retry", "Compression"]},
+        {"path": "skills/ctf-master/scripts/summarize_output.py", "contains": ["flag", "error", "warning"]}
+      ],
+      "notes": "ToolCards and output summarization are installed; real tool failures should later refine cards."
+    },
+    {
+      "id": "REQ-INTAKE-002",
+      "source": "attachment.core-question-2",
+      "requirement": "Help the agent quickly know what to inspect, run, and verify after receiving a challenge.",
+      "priority": "current_gate",
+      "status": "covered",
+      "evidence": [
+        {"path": "skills/ctf-master/SKILL.md", "contains": ["First 10 Minutes", "Routing"]},
+        {"path": "skills/ctf-master/references/deep-topic-router.md", "contains": ["Topic Families", "First Confirmation"]},
+        {"path": "skills/ctf-master/scripts/route_topic.py", "contains": ["topic_id", "first_safe_actions", "evidence_gates"]}
+      ],
+      "notes": "Master route plus deep-topic router provides category and topic-level first actions."
+    },
+    {
+      "id": "REQ-KNOWLEDGE-003",
+      "source": "attachment.core-question-3",
+      "requirement": "Make external knowledge precise, non-overloading, source-rated, and convertible into reusable skill material.",
+      "priority": "current_gate",
+      "status": "covered",
+      "evidence": [
+        {"path": "skills/ctf-knowledge/SKILL.md", "contains": ["source", "distill"]},
+        {"path": "skills/ctf-knowledge/references/distillation-rules.md", "contains": ["Do not paste", "Skill conversion"]},
+        {"path": "research/seed-source-matrix.md", "contains": ["Source", "Borrowed Design", "Do Not Blindly Copy"]}
+      ],
+      "notes": "Seed matrix includes the three user-requested references and broader research inputs."
+    },
+    {
+      "id": "REQ-SOURCE-MATRIX-017",
+      "source": "user.objective.reference-absorption-hardening",
+      "requirement": "Make source absorption auditable so each requested reference has borrowed-design, do-not-copy, and local skill-conversion evidence instead of prose-only claims.",
+      "priority": "current_gate",
+      "status": "covered",
+      "evidence": [
+        {"path": "scripts/audit_source_matrix.py", "contains": ["ctf-source-matrix-audit-v1", "REQUIRED_SOURCES", "conversion_terms", "Source Anchor"]},
+        {"path": "research/seed-source-matrix.md", "contains": ["MCP tool reverse anchors", "knowledge distillation", "structured evidence", "ToolCards", "Last Reviewed"]},
+        {"path": "scripts/release_gate.py", "contains": ["audit_source_matrix.py"]},
+        {"path": "scripts/audit_quality.py", "contains": ["source-matrix-audit"]},
+        {"path": "tests/test_scripts.py", "contains": ["test_source_matrix_audit_checks_reference_absorption"]}
+      ],
+      "notes": "This makes the user's three reference sources and broader research signals part of the executable release surface."
+    },
+    {
+      "id": "REQ-REFERENCE-PROVENANCE-020",
+      "source": "user.objective.reference-absorption-hardening",
+      "requirement": "Preserve reference-source provenance so future maintainers can see the exact source anchor, observed signals, and review date behind each absorbed design choice.",
+      "priority": "current_gate",
+      "status": "covered",
+      "evidence": [
+        {"path": "scripts/audit_source_matrix.py", "contains": ["Source Anchor", "Observed Signals", "Last Reviewed", "missing_provenance_count"]},
+        {"path": "research/seed-source-matrix.md", "contains": ["https://github.com/MyuriKanao/src-hunter-skill", "https://github.com/yaklang/hack-skills", "/Users/bytedance/red_team_skill/README.md", "2026-06-18"]},
+        {"path": "scripts/audit_quality.py", "contains": ["Source Anchor", "missing_provenance_count"]},
+        {"path": "tests/test_scripts.py", "contains": ["source_anchor", "last_reviewed", "missing_provenance_count"]}
+      ],
+      "notes": "This hardens reference absorption from a static note into a reviewable provenance contract."
+    },
+    {
+      "id": "REQ-STATE-004",
+      "source": "attachment.core-question-4",
+      "requirement": "Design a CTF solving state machine so the agent updates progress instead of retrying blindly.",
+      "priority": "current_gate",
+      "status": "covered",
+      "evidence": [
+        {"path": "skills/ctf-master/references/state-schema.md", "contains": ["CTFRunState", "EvidenceRecord", "HandoffPacket"]},
+        {"path": "skills/ctf-master/scripts/init_state.py", "contains": ["ctf-run-state-v1", "known_facts"]},
+        {"path": "skills/ctf-master/scripts/update_state.py", "contains": ["hypothesis", "dead_end", "next_action"]},
+        {"path": "skills/ctf-master/scripts/validate_state.py", "contains": ["ctf-run-state-validation-v1", "next_actions", "raw_artifact"]},
+        {"path": "skills/ctf-master/scripts/checkpoint_state.py", "contains": ["ctf-run-checkpoint-v1", "resume_checklist", "resume_risks"]}
+      ],
+      "notes": "Scripts make state creation, append-only updates, and integrity validation repeatable."
+    },
+    {
+      "id": "REQ-PROFILE-015",
+      "source": "user.objective.state-machine-operability",
+      "requirement": "Make ChallengeProfile changes deterministic so scope, targets, attachments, category, rules, and handoff readiness can be updated without hand-editing JSON.",
+      "priority": "current_gate",
+      "status": "covered",
+      "evidence": [
+        {"path": "skills/ctf-master/scripts/update_profile.py", "contains": ["ctf-profile-update-v1", "scope_status", "add-attachment", "handoff_ready"]},
+        {"path": "skills/ctf-master/SKILL.md", "contains": ["update_profile.py", "without manual JSON editing"]},
+        {"path": "scripts/audit_quality.py", "contains": ["profile-update-surface"]},
+        {"path": "tests/test_scripts.py", "contains": ["test_update_profile_updates_scope_targets_and_attachments"]}
+      ],
+      "notes": "Profile updates now have a deterministic CLI path and are checked by smoke/unit/quality gates."
+    },
+    {
+      "id": "REQ-STUCK-005",
+      "source": "attachment.core-question-5",
+      "requirement": "Classify stuck states into continue, search, switch tools, ask human, or handoff.",
+      "priority": "current_gate",
+      "status": "covered",
+      "evidence": [
+        {"path": "skills/ctf-master/references/ctf-loop.md", "contains": ["Stuck", "search", "handoff"]},
+        {"path": "skills/ctf-master/references/acceptance-gates.md", "contains": ["Human Intervention Gate", "Handoff Gate"]},
+        {"path": "skills/ctf-handoff-report/SKILL.md", "contains": ["dead ends", "next actions"]}
+      ],
+      "notes": "Current gates define when to hand off; real challenge runs should add examples."
+    },
+    {
+      "id": "REQ-HANDOFF-006",
+      "source": "attachment.core-question-6",
+      "requirement": "Provide a fixed handoff template so humans or other models can continue efficiently.",
+      "priority": "current_gate",
+      "status": "covered",
+      "evidence": [
+        {"path": "skills/ctf-handoff-report/references/handoff-template.md", "contains": ["challenge_summary", "evidence_table", "most_likely_next_steps"]},
+        {"path": "skills/ctf-handoff-report/scripts/render_handoff.py", "contains": ["Evidence", "Dead Ends", "Next Actions"]},
+        {"path": "skills/ctf-handoff-report/scripts/render_reflection.py", "contains": ["improvement_candidates", "hard_questions"]},
+        {"path": "skills/ctf-handoff-report/scripts/finalize_run.py", "contains": ["ctf-run-package-v1", "run-package-manifest.json"]},
+        {"path": "forward-tests/scenarios/handoff-three-dead-ends.json", "contains": ["three hypotheses failed", "handoff"]}
+      ],
+      "notes": "Handoff and post-run reflection can be rendered from a state file."
+    },
+    {
+      "id": "REQ-CHECKPOINT-012",
+      "source": "user.objective.state-compression-and-reference-checkpoint",
+      "requirement": "Provide a deterministic checkpoint/context-compression artifact so long CTF runs can pause, resume, or hand off without rereading all raw context.",
+      "priority": "current_gate",
+      "status": "covered",
+      "evidence": [
+        {"path": "skills/ctf-master/scripts/checkpoint_state.py", "contains": ["ctf-run-checkpoint-v1", "resume_checklist", "artifact_paths", "validate_state"]},
+        {"path": "skills/ctf-master/references/ctf-loop.md", "contains": ["Checkpoint", "checkpoint_state.py", "Context Compression"]},
+        {"path": "scripts/run_demo_solve.py", "contains": ["render_checkpoint", "checkpoint.md"]},
+        {"path": "skills/ctf-handoff-report/scripts/finalize_run.py", "contains": ["CHECKPOINT_STATE", "checkpoint.md"]},
+        {"path": "tests/test_scripts.py", "contains": ["test_checkpoint_state_renders_resume_snapshot", "Resume Checklist"]}
+      ],
+      "notes": "Checkpointing converts context compression from prose guidance into a reusable artifact."
+    },
+    {
+      "id": "REQ-PHASE-GATE-014",
+      "source": "reference.absorption.src-hunter-red-team",
+      "requirement": "Convert phase/checkpoint discipline into executable CTF run gates so the agent cannot silently skip scope, triage, route, experiment, verification, report, or handoff readiness checks.",
+      "priority": "current_gate",
+      "status": "covered",
+      "evidence": [
+        {"path": "skills/ctf-master/scripts/gate_state.py", "contains": ["ctf-run-phase-gates-v1", "intake-scope", "solve-verification", "handoff-readiness"]},
+        {"path": "skills/ctf-master/references/phase-gates.md", "contains": ["Gate Order", "require-ready report", "require-ready handoff"]},
+        {"path": "scripts/audit_quality.py", "contains": ["phase-gate-discipline"]},
+        {"path": "tests/test_scripts.py", "contains": ["test_gate_state_blocks_unsafe_progress_and_passes_report_ready_state"]}
+      ],
+      "notes": "This turns external phase-gate/checkpoint inspiration into a deterministic CTF-specific state gate."
+    },
+    {
+      "id": "REQ-ANTI-007",
+      "source": "attachment.core-question-7",
+      "requirement": "Detect and defend against prompt injection, hidden instructions, fake flags, visual/long-text traps, tool poisoning, and unsafe verbatim replay of hostile text.",
+      "priority": "current_gate",
+      "status": "covered",
+      "evidence": [
+        {"path": "skills/ctf-anti-injection/SKILL.md", "contains": ["untrusted", "prompt injection", "sanitized paraphrases"]},
+        {"path": "skills/ctf-anti-injection/references/untrusted-content.md", "contains": ["fake flag", "tool output", "Sanitized Reporting"]},
+        {"path": "skills/ctf-anti-injection/scripts/scan_untrusted_text.py", "contains": ["ignore", "submit this", "hidden", "sanitize_excerpt"]}
+      ],
+      "notes": "Visual and long-text cases are covered as workflow guidance. Fresh-agent v2 exposed a safe-reporting gap where hostile text was rejected but repeated verbatim; v0.36.0 adds sanitized reporting and redacted scanner excerpts."
+    },
+    {
+      "id": "REQ-ENV-008",
+      "source": "attachment.core-question-8",
+      "requirement": "Prepare and preflight VPS/OOB, VPN, Docker, VM, GUI, browser, IDA, proxy, network, and local competition environment needs.",
+      "priority": "current_gate",
+      "status": "covered",
+      "evidence": [
+        {"path": "skills/ctf-tool-preflight/references/environment-preflight.md", "contains": ["VPN", "OOB", "Docker", "GUI"]},
+        {"path": "skills/ctf-tool-preflight/scripts/ctf_preflight.py", "contains": ["profiles", "general", "web", "pwn"]},
+        {"path": "skills/ctf-tool-preflight/references/mcp-adapters.md", "contains": ["Chrome DevTools", "IDA", "CTFd"]}
+      ],
+      "notes": "Preflight reports missing tools but intentionally does not install them."
+    },
+    {
+      "id": "REQ-SKILLS-009",
+      "source": "attachment.core-question-9",
+      "requirement": "Design layered, triggerable, maintainable, testable skills.",
+      "priority": "current_gate",
+      "status": "covered",
+      "evidence": [
+        {"path": "suite-manifest.json", "contains": ["ctf-master", "ctf-web", "ctf-tool-preflight", "ctf-handoff-report"]},
+        {"path": "SKILL_SUITE.md", "contains": ["Structure", "Maintenance Rules", "Validation"]},
+        {"path": "scripts/validate_suite.py", "contains": ["validate_manifest", "validate_forward_scenarios", "audit_quality.py"]},
+        {"path": "scripts/release_gate.py", "contains": ["ALLOWED_PARTIAL_OR_OPEN", "REQ-EVAL-FRESH-AGENT"]}
+      ],
+      "notes": "Nine installable skills are present with manifest and tests."
+    },
+    {
+      "id": "REQ-AGENT-METADATA-016",
+      "source": "skill-creator.agent-metadata",
+      "requirement": "Validate agents/openai.yaml metadata so UI-facing display names, short descriptions, and default prompts stay aligned with SKILL.md trigger identity after skill updates.",
+      "priority": "current_gate",
+      "status": "covered",
+      "evidence": [
+        {"path": "scripts/audit_agent_metadata.py", "contains": ["ctf-agent-metadata-audit-v1", "default_prompt", "short_description"]},
+        {"path": "scripts/release_gate.py", "contains": ["audit_agent_metadata.py"]},
+        {"path": "scripts/audit_quality.py", "contains": ["agent-metadata"]},
+        {"path": "tests/test_scripts.py", "contains": ["test_agent_metadata_audit_checks_openai_yaml"]}
+      ],
+      "notes": "This covers the skill-creator requirement to keep agents/openai.yaml consistent after updates."
+    },
+    {
+      "id": "REQ-QUALITY-011",
+      "source": "user.objective.iteration-and-reflection",
+      "requirement": "Turn reflection, hard-question pressure testing, reference absorption, routing quality, progressive disclosure, and fresh-agent honesty into executable quality gates.",
+      "priority": "current_gate",
+      "status": "covered",
+      "evidence": [
+        {"path": "scripts/audit_quality.py", "contains": ["reference-absorption", "progressive-disclosure", "fresh-agent-honesty", "routing-quality", "reflection-loop", "checkpoint-discipline", "pressure-audit"]},
+        {"path": "scripts/audit_pressure.py", "contains": ["ctf-agent-skills-pressure-audit-v1", "hard_questions", "accepted_gap_ids"]},
+        {"path": "scripts/release_gate.py", "contains": ["audit_quality.py", "audit_pressure.py"]},
+        {"path": "suite-manifest.json", "contains": ["quality_audit", "pressure_audit"]},
+        {"path": "tests/test_scripts.py", "contains": ["test_quality_audit_checks_design_invariants", "progressive-disclosure"]}
+      ],
+      "notes": "Quality review is now a machine-checkable gate rather than a prose-only audit."
+    },
+    {
+      "id": "REQ-PRESSURE-AUDIT-024",
+      "source": "user.objective.iteration-and-reflection",
+      "requirement": "Turn hard questions and detail pressure-testing into a machine-readable audit that lists failure modes, evidence, accepted gaps, future watch items, and next actions.",
+      "priority": "current_gate",
+      "status": "covered",
+      "evidence": [
+        {"path": "scripts/audit_pressure.py", "contains": ["ctf-agent-skills-pressure-audit-v1", "PRESSURE_CASES", "pressure_cases", "failure_mode", "accepted_gap", "future_watch", "next_actions"]},
+        {"path": "suite-manifest.json", "contains": ["pressure_audit"]},
+        {"path": "scripts/release_gate.py", "contains": ["audit_pressure.py"]},
+        {"path": "scripts/audit_quality.py", "contains": ["pressure-audit"]},
+        {"path": "tests/test_scripts.py", "contains": ["test_pressure_audit_reports_hard_questions_and_honest_gap"]}
+      ],
+      "notes": "This converts reflection pressure from a prose section into an executable audit while preserving the fresh-agent gap as accepted, not solved."
+    },
+    {
+      "id": "REQ-COMPLETION-AUDIT-022",
+      "source": "user.objective.final-quality-proof",
+      "requirement": "Separate engineering readiness from final v1 completion proof so the suite can be installable while still refusing to claim completion without independent fresh-agent evidence.",
+      "priority": "current_gate",
+      "status": "covered",
+      "evidence": [
+        {"path": "scripts/audit_completion.py", "contains": ["ctf-agent-skills-completion-audit-v1", "engineering_ok", "v1_ready", "fresh-agent-independent-run"]},
+        {"path": "scripts/release_gate.py", "contains": ["audit_completion.py"]},
+        {"path": "suite-manifest.json", "contains": ["completion_audit"]},
+        {"path": "scripts/audit_quality.py", "contains": ["completion-audit"]},
+        {"path": "tests/test_scripts.py", "contains": ["test_completion_audit_reports_engineering_ready_but_not_v1"]}
+      ],
+      "notes": "This makes the final completion claim auditable instead of relying on prose confidence."
+    },
+    {
+      "id": "REQ-TRIGGER-013",
+      "source": "user.objective.skill-trigger-conflict-audit",
+      "requirement": "Audit skill trigger metadata and obvious routing conflicts so category/support skills do not accidentally steal or miss CTF tasks.",
+      "priority": "current_gate",
+      "status": "covered",
+      "evidence": [
+        {"path": "scripts/audit_triggers.py", "contains": ["ctf-skill-trigger-audit-v1", "INLINE_PROBES", "forbidden_top"]},
+        {"path": "scripts/audit_quality.py", "contains": ["trigger-audit"]},
+        {"path": "suite-manifest.json", "contains": ["trigger_audit"]},
+        {"path": "tests/test_scripts.py", "contains": ["test_trigger_audit_checks_skill_metadata"]}
+      ],
+      "notes": "Deterministic trigger checks catch metadata and obvious ranking regressions, but do not replace independent fresh-agent validation."
+    },
+    {
+      "id": "REQ-ROUTE-010",
+      "source": "attachment.core-question-10",
+      "requirement": "Compare code-agent + skills, dedicated CTF agent, and hybrid route; prefer short/mid-term practicality without overfocusing on model routing.",
+      "priority": "current_gate",
+      "status": "covered",
+      "evidence": [
+        {"path": "research/requirements-traceability.md", "contains": ["hybrid", "mature code agent", "dedicated CTF agent"]},
+        {"path": "research/seed-source-matrix.md", "contains": ["Cybench", "NYU CTF Bench", "MCP"]}
+      ],
+      "notes": "Suite implements the hybrid route; traceability doc records route comparison."
+    },
+    {
+      "id": "REQ-REF-SRC-HUNTER",
+      "source": "user.reference.src-hunter-skill",
+      "requirement": "Absorb checkpointing, scope gate, evidence discipline, and on-demand playbook reading from src-hunter-skill without copying it directly.",
+      "priority": "current_gate",
+      "status": "covered",
+      "evidence": [
+        {"path": "research/seed-source-matrix.md", "contains": ["src-hunter-skill", "Scope gate", "Evidence discipline"]},
+        {"path": "REFLECTION_AUDIT.md", "contains": ["src-hunter-skill", "Checkpoint workflow"]}
+      ],
+      "notes": "Converted into CTF-specific master gates and state discipline."
+    },
+    {
+      "id": "REQ-REF-HACK-SKILLS",
+      "source": "user.reference.yaklang-hack-skills",
+      "requirement": "Absorb master/category/deep-topic routing and knowledge distillation from yaklang/hack-skills.",
+      "priority": "current_gate",
+      "status": "covered",
+      "evidence": [
+        {"path": "research/seed-source-matrix.md", "contains": ["yaklang/hack-skills", "deep topic"]},
+        {"path": "skills/ctf-master/references/deep-topic-router.md", "contains": ["Topic Families", "web.ssti", "crypto.rsa"]}
+      ],
+      "notes": "Deep-topic router is the concrete conversion."
+    },
+    {
+      "id": "REQ-REF-RED-TEAM",
+      "source": "user.reference.local-red-team-skill",
+      "requirement": "Absorb runner/tricks/bypass/verdict separation, strong gates, tool whitelist, structured evidence, and context protection from local red_team_skill.",
+      "priority": "current_gate",
+      "status": "covered",
+      "evidence": [
+        {"path": "REFLECTION_AUDIT.md", "contains": ["Runner/tricks/bypass/verdict", "Structured evidence"]},
+        {"path": "skills/ctf-master/references/state-schema.md", "contains": ["EvidenceRecord"]},
+        {"path": "skills/ctf-tool-preflight/references/tool-cards.md", "contains": ["Allowed tools", "Output handling"]}
+      ],
+      "notes": "Converted to CTF state, gates, ToolCards, and handoff/report split."
+    },
+    {
+      "id": "REQ-INTERFACES",
+      "source": "user.phase-one-plan.interfaces",
+      "requirement": "Define ChallengeProfile, ToolCard, CTFRunState, EvidenceRecord, and HandoffPacket for later stages.",
+      "priority": "current_gate",
+      "status": "covered",
+      "evidence": [
+        {"path": "skills/ctf-master/references/state-schema.md", "contains": ["ChallengeProfile", "CTFRunState", "EvidenceRecord", "HandoffPacket"]},
+        {"path": "skills/ctf-master/references/tool-card-template.md", "contains": ["ToolCard"]}
+      ],
+      "notes": "Interfaces are implemented as reference schemas and script contracts."
+    },
+    {
+      "id": "REQ-PHASE-ONE",
+      "source": "attachment.phase-one",
+      "requirement": "Deliver phase-one framework: restatement, key questions, boundaries, research questions, system shape, and roadmap.",
+      "priority": "current_gate",
+      "status": "covered",
+      "evidence": [
+        {"path": "SKILL_SUITE.md", "contains": ["Research Inputs", "Iteration Questions"]},
+        {"path": "REFLECTION_AUDIT.md", "contains": ["What Was Absorbed", "Remaining Risks", "Completion Criteria"]}
+      ],
+      "notes": "Current repo has moved beyond phase one into installable skill artifacts; this matrix preserves the phase-one contract."
+    },
+    {
+      "id": "REQ-PHASE-TWO-REPORT",
+      "source": "attachment.phase-two",
+      "requirement": "Produce a complete research report with executive summary, ecosystem analysis, tool engineering, orchestration, safety, environment, benchmark, roadmap, and risk sections.",
+      "priority": "current_gate",
+      "status": "covered",
+      "evidence": [
+        {"path": "research/phase-two-research-report.md", "contains": ["Executive Summary", "资料矩阵", "当前 CTF Agent", "工具工程方案", "评测体系", "风险、限制、合规"]},
+        {"path": "research/seed-source-matrix.md", "contains": ["Seed Source Matrix"]},
+        {"path": "REFLECTION_AUDIT.md", "contains": ["Remaining Risks"]}
+      ],
+      "notes": "Standalone phase-two research report now exists; benchmark and fresh-agent evidence remain separate v1 targets."
+    },
+    {
+      "id": "REQ-PHASE-THREE-SKILLS",
+      "source": "attachment.phase-three",
+      "requirement": "Produce installable skills with master/category/tool/environment/knowledge/anti-adversarial/handoff/report layers, scripts, tests, install/update/audit methods, and several SKILL.md drafts/templates.",
+      "priority": "current_gate",
+      "status": "covered",
+      "evidence": [
+        {"path": "suite-manifest.json", "contains": ["skills", "validation"]},
+        {"path": "install.sh", "contains": ["codex", "claude", "dry-run"]},
+        {"path": "tests/test_scripts.py", "contains": ["test_demo_solve_generates_state_handoff_and_writeup", "pwn-offset", "forensics-b64log", "test_validate_state_checks_schema_and_references", "test_render_reflection_extracts_improvement_candidates", "test_finalize_run_packages_state_reports_and_manifest"]}
+      ],
+      "notes": "Nine concrete SKILL.md files exist, not only drafts."
+    },
+    {
+      "id": "REQ-EVAL-FRESH-AGENT",
+      "source": "skill-creator.forward-testing",
+      "requirement": "Forward-test complex skills in fresh agent contexts without leaking expected answers.",
+      "priority": "v1_target",
+      "status": "partial",
+      "evidence": [
+        {"path": "forward-tests/README.md", "contains": ["fresh agent", "Do not include expected answers"]},
+        {"path": "forward-tests/scenarios/deep-topic-mixed-signals.json", "contains": ["Do not solve the challenge"]},
+        {"path": "scripts/run_forward_suite.py", "contains": ["prompt-pack", "responses-dir", "auto_pass"]},
+        {"path": "scripts/audit_fresh_agent_readiness.py", "contains": ["ctf-fresh-agent-readiness-audit-v1", "ready_for_fresh_agent"]},
+        {"path": "scripts/export_fresh_agent_packet.py", "contains": ["ctf-fresh-agent-packet-export-v1", "PACKET_MANIFEST.json"]},
+        {"path": "scripts/audit_fresh_agent_packet.py", "contains": ["ctf-fresh-agent-packet-audit-v1", "prompt sha256 mismatch"]},
+        {"path": "scripts/render_fresh_agent_launch_prompt.py", "contains": ["ctf-fresh-agent-launch-prompt-render-v1", "Allowed local skill root"]},
+        {"path": "forward-tests/fresh-agent-run-record-template.json", "contains": ["fresh_context_confirmed", "expected_answers_disclosed", "human_rubric"]},
+        {"path": "scripts/verify_forward_run.py", "contains": ["fresh_context_confirmed", "expected_answers_disclosed", "human rubric"]},
+        {"path": "forward-tests/FRESH_AGENT_EVALUATION_SUMMARY.md", "contains": ["user-accepted", "v4", "Residual Risk"]},
+        {"path": "forward-tests/fresh-agent-evaluation-waiver.json", "contains": ["accept_current_evidence_skip_final_rerun", "residual_risk"]}
+      ],
+      "notes": "Scenarios, prompt-pack generation, scoring, run-record template, strict verifier, and multiple fresh-agent iteration records exist. The final v4 independent rerun is explicitly user-waived, so this remains partial for strict fresh-agent verification."
+    },
+    {
+      "id": "REQ-FORWARD-INTEGRITY-018",
+      "source": "skill-creator.forward-testing-integrity",
+      "requirement": "Audit fresh-agent prompt packs and run-record templates so forward tests do not leak scoring fields, expected-answer metadata, or already-passed status before a real independent run.",
+      "priority": "current_gate",
+      "status": "covered",
+      "evidence": [
+        {"path": "scripts/audit_forward_integrity.py", "contains": ["ctf-forward-integrity-audit-v1", "SENSITIVE_SCENARIO_FIELDS", "do_not_include_expected_answers"]},
+        {"path": "scripts/run_forward_suite.py", "contains": ["do_not_include_expected_answers", "Do not include scenario JSON"]},
+        {"path": "forward-tests/README.md", "contains": ["audit_forward_integrity.py", "avoid leaking expected answers"]},
+        {"path": "scripts/release_gate.py", "contains": ["audit_forward_integrity.py"]},
+        {"path": "scripts/audit_quality.py", "contains": ["forward-integrity"]},
+        {"path": "tests/test_scripts.py", "contains": ["test_forward_integrity_audit_blocks_answer_leakage"]}
+      ],
+      "notes": "This does not complete the independent fresh-agent run, but it hardens the evaluation surface before that run."
+    },
+    {
+      "id": "REQ-FORWARD-RUN-INIT-019",
+      "source": "skill-creator.forward-testing-execution",
+      "requirement": "Provide a deterministic initializer for fresh-agent forward-test workspaces so prompt packs, response directories, run records, manifests, and runbooks are created consistently before an independent run.",
+      "priority": "current_gate",
+      "status": "covered",
+      "evidence": [
+        {"path": "scripts/init_forward_run.py", "contains": ["ctf-forward-run-init-v1", "ctf-forward-run-workspace-v1", "fresh-agent-run-record.json"]},
+        {"path": "scripts/validate_suite.py", "contains": ["init_forward_run.py", "ctf-forward-run-init-v1"]},
+        {"path": "scripts/release_gate.py", "contains": ["init_forward_run.py"]},
+        {"path": "scripts/audit_quality.py", "contains": ["forward-run-init"]},
+        {"path": "forward-tests/README.md", "contains": ["init_forward_run.py", "forward-run-workspace.json"]},
+        {"path": "tests/test_scripts.py", "contains": ["test_init_forward_run_creates_fresh_workspace"]}
+      ],
+      "notes": "The initializer prepares evidence paths and keeps the record in not_run state until a real fresh-agent pass is performed."
+    },
+    {
+      "id": "REQ-FORWARD-RUBRIC-023",
+      "source": "skill-creator.forward-testing-execution",
+      "requirement": "Provide a deterministic human-rubric template for fresh-agent forward-test workspaces so every scenario is reviewed with stable dimensions before finalizing the run record.",
+      "priority": "current_gate",
+      "status": "covered",
+      "evidence": [
+        {"path": "scripts/render_forward_rubric.py", "contains": ["ctf-forward-human-rubric-v1", "untrusted_content_boundary", "scenario_scores"]},
+        {"path": "scripts/init_forward_run.py", "contains": ["rubric-template.json", "rubric_template_path"]},
+        {"path": "scripts/validate_suite.py", "contains": ["render_forward_rubric.py", "ctf-forward-human-rubric-render-v1"]},
+        {"path": "scripts/audit_quality.py", "contains": ["forward-run-rubric"]},
+        {"path": "tests/test_scripts.py", "contains": ["test_render_forward_rubric_creates_review_template"]}
+      ],
+      "notes": "This reduces manual rubric drift while preserving the requirement for a real independent fresh-agent run."
+    },
+    {
+      "id": "REQ-FORWARD-HANDOFF-025",
+      "source": "skill-creator.forward-testing-integrity",
+      "requirement": "Generate an answer-free fresh-agent handoff packet from the forward workspace so independent runs receive only prompt paths, response rules, and hashes, not expected-answer metadata.",
+      "priority": "current_gate",
+      "status": "covered",
+      "evidence": [
+        {"path": "scripts/render_forward_handoff.py", "contains": ["ctf-forward-handoff-render-v1", "FORBIDDEN_LEAK_TERMS", "Fresh-Agent Handoff", "prompt_hashes"]},
+        {"path": "scripts/init_forward_run.py", "contains": ["FRESH_AGENT_HANDOFF.md", "fresh_agent_handoff_path"]},
+        {"path": "scripts/verify_forward_run.py", "contains": ["fresh_agent_handoff_path", "fresh-agent handoff leaks forbidden term"]},
+        {"path": "scripts/validate_suite.py", "contains": ["render_forward_handoff.py", "ctf-forward-handoff-render-v1"]},
+        {"path": "scripts/audit_quality.py", "contains": ["forward-handoff"]},
+        {"path": "tests/test_scripts.py", "contains": ["test_render_forward_handoff_creates_answer_free_packet"]}
+      ],
+      "notes": "This reduces contamination risk when the fresh-agent proof is finally run; it does not itself count as the independent run."
+    },
+    {
+      "id": "REQ-FRESH-AGENT-READINESS-026",
+      "source": "skill-creator.forward-testing-integrity",
+      "requirement": "Audit a generated fresh-agent workspace before launch so prompt hashes, handoff content, run record, rubric template, runbook, empty response directory, and absence of expected-answer leak terms are checked together.",
+      "priority": "current_gate",
+      "status": "covered",
+      "evidence": [
+        {"path": "scripts/audit_fresh_agent_readiness.py", "contains": ["ctf-fresh-agent-readiness-audit-v1", "ready_for_fresh_agent", "FORBIDDEN_LEAK_TERMS", "response_dir should be empty before fresh-agent run"]},
+        {"path": "scripts/validate_suite.py", "contains": ["audit_fresh_agent_readiness.py", "ctf-fresh-agent-readiness-audit-v1"]},
+        {"path": "scripts/release_gate.py", "contains": ["audit_fresh_agent_readiness.py"]},
+        {"path": "scripts/audit_quality.py", "contains": ["fresh-agent-readiness"]},
+        {"path": "scripts/audit_completion.py", "contains": ["fresh_agent_readiness_audit"]},
+        {"path": "suite-manifest.json", "contains": ["fresh_agent_readiness_audit"]},
+        {"path": "tests/test_scripts.py", "contains": ["test_fresh_agent_readiness_audit_checks_clean_handoff_materials"]}
+      ],
+      "notes": "This is a pre-run readiness gate; it does not replace the required independent fresh-agent execution evidence."
+    },
+    {
+      "id": "REQ-FRESH-AGENT-PACKET-027",
+      "source": "skill-creator.forward-testing-integrity",
+      "requirement": "Export a minimal fresh-agent launch packet containing only the answer-free handoff, response rules, packet manifest, and prompt files so independent evaluators are less likely to receive run records, rubric files, score output, workspace manifests, scenario JSON, or prior analysis.",
+      "priority": "current_gate",
+      "status": "covered",
+      "evidence": [
+        {"path": "scripts/export_fresh_agent_packet.py", "contains": ["ctf-fresh-agent-packet-export-v1", "ctf-fresh-agent-packet-v1", "PACKET_MANIFEST.json", "excluded_materials"]},
+        {"path": "scripts/validate_suite.py", "contains": ["export_fresh_agent_packet.py", "ctf-fresh-agent-packet-export-v1"]},
+        {"path": "scripts/release_gate.py", "contains": ["export_fresh_agent_packet.py"]},
+        {"path": "scripts/audit_quality.py", "contains": ["fresh-agent-packet"]},
+        {"path": "scripts/audit_completion.py", "contains": ["fresh_agent_packet_export"]},
+        {"path": "suite-manifest.json", "contains": ["fresh_agent_packet_export"]},
+        {"path": "forward-tests/README.md", "contains": ["export_fresh_agent_packet.py", "PACKET_MANIFEST.json"]},
+        {"path": "tests/test_scripts.py", "contains": ["test_export_fresh_agent_packet_contains_only_handoff_and_prompts"]}
+      ],
+      "notes": "This further reduces evaluation contamination risk but still does not count as a verified independent fresh-agent run."
+    },
+    {
+      "id": "REQ-FRESH-AGENT-PACKET-AUDIT-028",
+      "source": "skill-creator.forward-testing-integrity",
+      "requirement": "Verify an exported fresh-agent packet independently from the source workspace so copied or handed-off packets can be checked for required files, forbidden files, prompt hash drift, manifest consistency, and forbidden leak terms.",
+      "priority": "current_gate",
+      "status": "covered",
+      "evidence": [
+        {"path": "scripts/audit_fresh_agent_packet.py", "contains": ["ctf-fresh-agent-packet-audit-v1", "REQUIRED_TOP_LEVEL_FILES", "FORBIDDEN_FILE_NAMES", "prompt sha256 mismatch"]},
+        {"path": "scripts/validate_suite.py", "contains": ["audit_fresh_agent_packet.py", "ctf-fresh-agent-packet-audit-v1"]},
+        {"path": "scripts/release_gate.py", "contains": ["audit_fresh_agent_packet.py"]},
+        {"path": "scripts/audit_quality.py", "contains": ["fresh-agent-packet-audit"]},
+        {"path": "scripts/audit_completion.py", "contains": ["fresh_agent_packet_audit"]},
+        {"path": "suite-manifest.json", "contains": ["fresh_agent_packet_audit"]},
+        {"path": "tests/test_scripts.py", "contains": ["test_audit_fresh_agent_packet_detects_extra_files_and_hash_drift"]}
+      ],
+      "notes": "This protects the launch packet after export; the actual fresh-agent execution record is still required for v1 completion."
+    },
+    {
+      "id": "REQ-FRESH-AGENT-LAUNCH-PROMPT-029",
+      "source": "skill-creator.forward-testing-integrity",
+      "requirement": "Render a copy-paste launch prompt from an audited fresh-agent packet so independent runs start with packet-local prompt files, prompt hashes, response rules, and an explicit allowed local skill root, not prior development context or scoring materials.",
+      "priority": "current_gate",
+      "status": "covered",
+      "evidence": [
+        {"path": "scripts/render_fresh_agent_launch_prompt.py", "contains": ["ctf-fresh-agent-launch-prompt-render-v1", "audit_packet", "Fresh-Agent Forward Test Launch Prompt", "Allowed local skill root"]},
+        {"path": "scripts/validate_suite.py", "contains": ["render_fresh_agent_launch_prompt.py", "ctf-fresh-agent-launch-prompt-render-v1"]},
+        {"path": "scripts/release_gate.py", "contains": ["render_fresh_agent_launch_prompt.py"]},
+        {"path": "scripts/audit_quality.py", "contains": ["fresh-agent-launch-prompt"]},
+        {"path": "scripts/audit_completion.py", "contains": ["fresh_agent_launch_prompt_render"]},
+        {"path": "suite-manifest.json", "contains": ["fresh_agent_launch_prompt_render"]},
+        {"path": "forward-tests/README.md", "contains": ["render_fresh_agent_launch_prompt.py"]},
+        {"path": "tests/test_scripts.py", "contains": ["test_render_fresh_agent_launch_prompt_uses_packet_and_allowed_skill_root"]}
+      ],
+      "notes": "This shortens the remaining manual step before a real fresh-agent run; it does not itself prove the run occurred."
+    },
+    {
+      "id": "REQ-FRESH-AGENT-SKILL-ROOT-033",
+      "source": "fresh-agent-run.observed-failure",
+      "requirement": "Fresh-agent launch materials must allow the independent agent to read the local skill suite while still excluding scenario JSON, scoring files, rubric files, run records, workspace manifests, prior analysis, and development notes.",
+      "priority": "current_gate",
+      "status": "covered",
+      "evidence": [
+        {"path": "scripts/export_fresh_agent_packet.py", "contains": ["allowed_skill_root", "Skill Access"]},
+        {"path": "scripts/audit_fresh_agent_packet.py", "contains": ["allowed_skill_root", "allowed_skill_root has no skills directory"]},
+        {"path": "scripts/render_fresh_agent_launch_prompt.py", "contains": ["Allowed local skill root", "Resolve `./skills/<skill-name>`"]},
+        {"path": "scripts/validate_suite.py", "contains": ["fresh-agent launch prompt missing skill-root access boundary"]},
+        {"path": "tests/test_scripts.py", "contains": ["test_render_fresh_agent_launch_prompt_uses_packet_and_allowed_skill_root"]}
+      ],
+      "notes": "The first independent run found that packet-only wording prevented the fresh agent from reading the skills it was asked to use; this requirement preserves the corrected boundary."
+    },
+    {
+      "id": "REQ-FORWARD-RUN-FINALIZE-021",
+      "source": "skill-creator.forward-testing-execution",
+      "requirement": "Provide a deterministic finalizer for fresh-agent forward-test workspaces so collected responses are scored, hashed, merged with an external rubric, and verified without weakening the fresh-context honesty gate.",
+      "priority": "current_gate",
+      "status": "covered",
+      "evidence": [
+        {"path": "scripts/finalize_forward_run.py", "contains": ["ctf-forward-run-finalize-v1", "response_hashes", "confirm_fresh_context", "rubric-json"]},
+        {"path": "scripts/verify_forward_run.py", "contains": ["response_hashes", "response hash mismatch"]},
+        {"path": "scripts/validate_suite.py", "contains": ["finalize_forward_run.py", "must not pass without fresh-context/rubric confirmation"]},
+        {"path": "scripts/audit_quality.py", "contains": ["forward-run-finalize"]},
+        {"path": "forward-tests/README.md", "contains": ["finalize_forward_run.py", "confirm-fresh-context"]},
+        {"path": "tests/test_scripts.py", "contains": ["test_finalize_forward_run_scores_hashes_and_preserves_honesty_gate"]}
+      ],
+      "notes": "This reduces hand-built run-record risk while preserving the requirement for a real independent fresh-agent run."
+    },
+    {
+      "id": "REQ-RELEASE-CONSISTENCY-030",
+      "source": "user.objective.final-quality-proof",
+      "requirement": "Keep release-level artifacts synchronized so manifest version, skill inventory, validation command references, release-gate coverage, reflection status, and traceability JSON/Markdown IDs cannot drift silently during continued iteration.",
+      "priority": "current_gate",
+      "status": "covered",
+      "evidence": [
+        {"path": "scripts/audit_release_consistency.py", "contains": ["ctf-release-consistency-audit-v1", "skill-inventory", "validation-commands", "traceability-doc-sync", "REQ-RELEASE-CONSISTENCY-030"]},
+        {"path": "scripts/validate_suite.py", "contains": ["audit_release_consistency.py", "ctf-release-consistency-audit-v1"]},
+        {"path": "scripts/release_gate.py", "contains": ["audit_release_consistency.py"]},
+        {"path": "scripts/audit_quality.py", "contains": ["release-consistency-audit"]},
+        {"path": "suite-manifest.json", "contains": ["0.38.0", "release_consistency_audit"]},
+        {"path": "SKILL_SUITE.md", "contains": ["audit_release_consistency.py", "release drift"]},
+        {"path": "tests/test_scripts.py", "contains": ["test_release_consistency_audit_checks_manifest_docs_and_traceability"]}
+      ],
+      "notes": "This guards long-running skill iteration against stale release surfaces; it does not replace independent fresh-agent validation."
+    },
+    {
+      "id": "REQ-CATEGORY-COVERAGE-031",
+      "source": "user.objective.final-quality-proof",
+      "requirement": "Track major CTF category coverage across skills, deep-topic routing, references, synthetic demos, forward scenarios, and verified benchmark evidence so the suite does not overclaim breadth or silently lose category support during iteration.",
+      "priority": "current_gate",
+      "status": "covered",
+      "evidence": [
+        {"path": "scripts/audit_category_coverage.py", "contains": ["ctf-category-coverage-audit-v1", "CATEGORY_SPECS", "future_benchmark_needed", "specialty.cloud-k8s"]},
+        {"path": "scripts/validate_suite.py", "contains": ["audit_category_coverage.py", "ctf-category-coverage-audit-v1"]},
+        {"path": "scripts/release_gate.py", "contains": ["audit_category_coverage.py"]},
+        {"path": "scripts/audit_quality.py", "contains": ["category-coverage-audit"]},
+        {"path": "suite-manifest.json", "contains": ["0.38.0", "category_coverage_audit"]},
+        {"path": "SKILL_SUITE.md", "contains": ["audit_category_coverage.py", "future benchmark gaps"]},
+        {"path": "forward-tests/scenarios/reverse-checker-decoy.json", "contains": ["rev.checker", "preflight", "untrusted"]},
+        {"path": "tests/test_scripts.py", "contains": ["test_category_coverage_audit_checks_core_and_specialty_coverage"]}
+      ],
+      "notes": "This makes category breadth visible while preserving the honest need for more real benchmark runs outside crypto."
+    },
+    {
+      "id": "REQ-EVIDENCE-CONTRACT-032",
+      "source": "reference.absorption.src-hunter-red-team",
+      "requirement": "Preserve a reproducible evidence contract for CTF handoff, writeup, and report outputs so conclusions cite EvidenceRecord entries, raw artifacts, contrast checks, verifier outcomes, and stay separated from unsupported verdicts.",
+      "priority": "current_gate",
+      "status": "covered",
+      "evidence": [
+        {"path": "scripts/audit_evidence_contract.py", "contains": ["ctf-evidence-contract-audit-v1", "evidence-record-reproducibility", "writeup-verification-contract", "reference-source-evidence-discipline"]},
+        {"path": "skills/ctf-master/references/state-schema.md", "contains": ["EvidenceRecord", "raw_artifact", "exit_status", "supports", "contradicts", "risk"]},
+        {"path": "skills/ctf-handoff-report/references/writeup-template.md", "contains": ["Evidence References", "Contrast Checks", "Verification"]},
+        {"path": "skills/ctf-handoff-report/scripts/render_writeup.py", "contains": ["Evidence References", "Raw Artifacts", "FLAG_RE"]},
+        {"path": "suite-manifest.json", "contains": ["0.38.0", "evidence_contract_audit"]},
+        {"path": "tests/test_scripts.py", "contains": ["test_evidence_contract_audit_checks_reproducible_report_contract"]}
+      ],
+      "notes": "This converts src-hunter evidence discipline and red_team verdict separation into an executable release gate; it does not add exploit payload content."
+    },
+    {
+      "id": "REQ-EVAL-REAL-CTF",
+      "source": "reflection.v1-criteria",
+      "requirement": "Run at least one real or benchmark CTF challenge end-to-end and compare behavior against the synthetic demo baseline.",
+      "priority": "v1_target",
+      "status": "covered",
+      "evidence": [
+        {"path": "REFLECTION_AUDIT.md", "contains": ["Run at least one real or benchmark CTF task"]},
+        {"path": "benchmarks/benchmark-runbook.md", "contains": ["Required Evidence", "validator/oracle", "synthetic baseline"]},
+        {"path": "scripts/init_benchmark_run.py", "contains": ["benchmark_scope_pending", "initialized_not_solved"]},
+        {"path": "scripts/verify_benchmark_run.py", "contains": ["solved_oracle_validated", "candidate flag and oracle output"]},
+        {"path": "benchmarks/runs/cybench-primary-knowledge/benchmark-run-record.json", "contains": ["cybench", "Primary Knowledge", "solved_oracle_validated", "synthetic_baseline_compared"]},
+        {"path": "benchmarks/runs/cybench-primary-knowledge/writeup.md", "contains": ["Primary Knowledge", "Flag evidence", "HTB{"]}
+      ],
+      "notes": "Cybench Primary Knowledge was solved from local release artifacts and verified against the benchmark oracle."
+    }
+  ]
+}

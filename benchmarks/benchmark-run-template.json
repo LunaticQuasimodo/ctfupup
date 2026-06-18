@@ -1,0 +1,20 @@
+{
+  "schema": "ctf-benchmark-run-record-v1",
+  "benchmark": "cybench | nyu-ctf-bench | local",
+  "challenge_id": "",
+  "title": "",
+  "category": "",
+  "source_url": "",
+  "benchmark_version_or_commit": "",
+  "scope_confirmed": false,
+  "ai_use_allowed": "unknown",
+  "state_path": "",
+  "raw_artifacts_dir": "",
+  "handoff_path": "",
+  "writeup_path": "",
+  "candidate_flag": "",
+  "oracle_or_validator_result": "",
+  "synthetic_baseline_compared": false,
+  "post_run_skill_changes": [],
+  "completion_status": "not_started"
+}

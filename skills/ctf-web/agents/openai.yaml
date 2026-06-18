@@ -1,0 +1,4 @@
+interface:
+  display_name: "CTF Web"
+  short_description: "Solve Web and API CTF challenges"
+  default_prompt: "Use $ctf-web to triage this Web/API CTF challenge and build evidence-backed experiments."

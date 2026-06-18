@@ -1,0 +1,4 @@
+interface:
+  display_name: "CTF Forensics/Crypto"
+  short_description: "Analyze forensics, misc, and crypto tasks"
+  default_prompt: "Use $ctf-forensics-crypto to preserve artifacts, triage the file or primitive, and verify the solve path."

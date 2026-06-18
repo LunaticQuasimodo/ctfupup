@@ -1,0 +1,49 @@
+# OS/editor noise
+.DS_Store
+*.swp
+*.swo
+.idea/
+.vscode/
+
+# Python cache/build artifacts
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+build/
+dist/
+*.egg-info/
+
+# Local virtualenvs
+.venv/
+venv/
+env/
+
+# Local challenge/run artifacts
+artifacts/
+reports/final-run/
+ctf-state.json
+*.pcap
+*.pcapng
+*.dmp
+*.core
+core
+
+# Secrets and local env files
+.env
+.env.*
+*.pem
+*.key
+*.p12
+*.pfx
+id_rsa*
+known_hosts
+
+# Generated fresh-agent/benchmark scratch outputs
+fresh-agent-run-record.json
+score-summary.json
+rubric-template.json
+forward-run-workspace.json
+FRESH_AGENT_HANDOFF.md
+FRESH_AGENT_LAUNCH_PROMPT.md

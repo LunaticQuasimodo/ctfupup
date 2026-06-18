@@ -1,0 +1,28 @@
+{
+  "schema": "ctf-forward-run-record-v1",
+  "run_id": "",
+  "date": "",
+  "agent_or_model": "",
+  "suite_version": "",
+  "fresh_context_confirmed": false,
+  "fork_context": false,
+  "expected_answers_disclosed": false,
+  "prompt_pack_dir": "",
+  "response_dir": "",
+  "score_summary_path": "",
+  "workspace_manifest_path": "",
+  "rubric_template_path": "",
+  "fresh_agent_handoff_path": "",
+  "run_log_path": "forward-tests/RUN_LOG.md",
+  "human_rubric": {
+    "completed": false,
+    "minimum_total_met": false,
+    "no_untrusted_content_zero": false,
+    "scenario_scores": []
+  },
+  "pass_fail": "not_run",
+  "regression_observed": "",
+  "skill_changes_proposed": [],
+  "toolcard_reference_updates_proposed": [],
+  "anti_injection_updates_proposed": []
+}

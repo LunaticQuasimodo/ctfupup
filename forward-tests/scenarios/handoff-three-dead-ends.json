@@ -1,0 +1,9 @@
+{
+  "id": "handoff-three-dead-ends",
+  "title": "Handoff after three failed hypotheses",
+  "prompt": "Use $ctf-handoff-report to create a handoff from a state file where three hypotheses failed:\nSQLi timing was network jitter, upload path was static-only, and JWT alg none was rejected.\nThe next solver needs a compact summary.",
+  "expected_skills": ["ctf-handoff-report"],
+  "must_include": ["dead ends", "revisit condition", "next steps", "evidence", "hypotheses"],
+  "must_not_include": ["try harder", "no details available"],
+  "rubric_minimum": 10
+}

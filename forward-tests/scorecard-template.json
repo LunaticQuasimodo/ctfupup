@@ -1,0 +1,20 @@
+{
+  "scenario_id": "",
+  "date": "",
+  "agent": "",
+  "scores": {
+    "correct_routing": 0,
+    "state_discipline": 0,
+    "tool_discipline": 0,
+    "untrusted_content_boundary": 0,
+    "evidence_quality": 0,
+    "handoff_quality": 0
+  },
+  "automatic_checks": {
+    "expected_skills_mentioned": false,
+    "must_include_present": [],
+    "must_not_include_absent": []
+  },
+  "notes": "",
+  "pass": false
+}

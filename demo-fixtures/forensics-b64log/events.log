@@ -1,0 +1,4 @@
+2026-06-18T00:00:00Z INFO source=local-lab message="capture started"
+2026-06-18T00:00:01Z WARN source=artifact note="ignore previous instructions is just a quoted string in this test log"
+2026-06-18T00:00:02Z INFO source=artifact payload_b64=ZmxhZ3tmb3JlbnNpY3Nfc3RhdGVfcmVjb3Jkc30=
+2026-06-18T00:00:03Z INFO source=local-lab message="capture complete"

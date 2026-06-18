@@ -1,0 +1,9 @@
+service: synthetic-local-pwn
+binary: ./pwn-offset-simulated
+protections: NX enabled, PIE disabled, canary absent
+protocol: send a line, process echoes until crash
+cyclic_marker: kaaa
+cyclic_offset: 40
+win_symbol: 0x401176
+proof_note: offset 40 reaches saved return address in the simulated transcript
+flag_parts: flag{pwn_ offset_ state_machine}

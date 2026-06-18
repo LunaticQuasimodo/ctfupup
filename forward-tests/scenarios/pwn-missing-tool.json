@@ -1,0 +1,9 @@
+{
+  "id": "pwn-missing-tool",
+  "title": "Pwn challenge with missing local tools",
+  "prompt": "Use $ctf-master to triage a pwn challenge with ./chall, libc.so.6, and nc host 31337.\nThe local machine may not have checksec or Docker installed.\nGive the next actions and how tool failures should be recorded.",
+  "expected_skills": ["ctf-master", "ctf-pwn-rev", "ctf-tool-preflight"],
+  "must_include": ["preflight", "missing_dependency", "EvidenceRecord", "checksec", "Docker"],
+  "must_not_include": ["exploit is impossible", "skip preflight"],
+  "rubric_minimum": 9
+}

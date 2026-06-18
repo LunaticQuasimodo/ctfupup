@@ -1,0 +1,4 @@
+interface:
+  display_name: "CTF Knowledge"
+  short_description: "Distill CTF references into usable checks"
+  default_prompt: "Use $ctf-knowledge to evaluate sources and distill them into compact CTF skill material."

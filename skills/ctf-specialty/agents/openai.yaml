@@ -1,0 +1,4 @@
+interface:
+  display_name: "CTF Specialty"
+  short_description: "Handle chain, AI, mobile, IoT, cloud tracks"
+  default_prompt: "Use $ctf-specialty to route this specialty CTF challenge and identify the safest first checks."

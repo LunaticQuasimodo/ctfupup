@@ -1,0 +1,4 @@
+interface:
+  display_name: "CTF Handoff/Report"
+  short_description: "Create CTF handoffs, writeups, and retros"
+  default_prompt: "Use $ctf-handoff-report to produce a precise handoff or reproducible CTF writeup from current state."

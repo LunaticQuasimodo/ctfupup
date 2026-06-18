@@ -1,0 +1,4 @@
+interface:
+  display_name: "CTF Pwn/Rev"
+  short_description: "Exploit and reverse CTF binaries"
+  default_prompt: "Use $ctf-pwn-rev to triage this binary challenge, plan tooling, and preserve exploit evidence."

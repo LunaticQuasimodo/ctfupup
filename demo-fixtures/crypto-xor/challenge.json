@@ -1,0 +1,6 @@
+{
+  "ciphertext_hex": "151908131e0b1a1b2b1607141d113a01100a1b17170614",
+  "key": "suite",
+  "encoding": "repeating-xor",
+  "flag_format": "flag{...}"
+}
