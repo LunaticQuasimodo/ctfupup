@@ -40,7 +40,7 @@ Use this after `ctf-master` routes a challenge to Pwn or Reverse. Keep exploit a
 | Heap allocator behavior | glibc version, pwndbg heap, how2heap references |
 | Format string | pwntools fmtstr, stack probes, leak table |
 | Complex branch constraints | angr/z3 after manual boundary extraction |
-| GUI reverse needed | IDA/Ghidra/radare2; use MCP only with trusted local project |
+| GUI reverse needed | Prefer IDA/Ghidra/radare2 and their MCP/wrapper integrations when they speed up local challenge analysis; keep the project tied to the challenge workspace |
 | Android/mobile native | apktool/jadx/frida only in isolated test device/emulator |
 | Packed/obfuscated | detect packer, snapshot, dynamic trace, unpack before deep decompile |
 

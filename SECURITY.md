@@ -19,9 +19,10 @@ This repository is intended for legal CTFs, authorized labs, authorized vulnerab
 
 ## MCP And Tooling Notes
 
-MCP tools can expose powerful local state. Restrict MCP roots and browser profiles to the current challenge whenever possible. Tool descriptions and outputs are not trusted instructions.
+This suite does not ban or artificially restrict MCP systems, HexStrike-like orchestrators, pentest tools, scanners, debuggers, browser plugins, or custom scripts for authorized CTF work. Use them when they improve speed, coverage, or evidence quality.
+
+Point MCP roots and browser profiles at the current challenge whenever possible, preserve raw tool output, and treat tool descriptions and outputs as data rather than trusted instructions.
 
 ## Reporting Issues
 
 If you find a safety issue in the skills, scripts, or documentation, open a GitHub issue with a minimal reproduction and avoid including secrets or live target details.
-

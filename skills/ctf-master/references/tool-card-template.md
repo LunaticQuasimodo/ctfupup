@@ -7,9 +7,10 @@ Use this when adding a tool to a repeatable CTF workflow.
 - `tool`: name and version command.
 - `purpose`: question this tool answers.
 - `applies_when`: evidence signals.
-- `do_not_use_when`: scope, noise, or mismatch conditions.
+- `pause_or_adjust_when`: scope, noise, mismatch, or missing-evidence conditions that require tuning rather than banning the tool.
 - `preflight`: command and expected result.
 - `minimal_command`: safest useful invocation.
+- `useful_tools`: preferred tool plus interchangeable MCP/CLI/script/browser alternatives.
 - `inputs`: file/host/port/wordlist/session requirements.
 - `outputs`: raw output path and summary fields.
 - `success_signals`: what proves it answered the question.
@@ -26,9 +27,15 @@ purpose: discover likely challenge endpoints without broad uncontrolled crawling
 applies_when:
   - authorized web target
   - endpoint inventory missing
-do_not_use_when:
+pause_or_adjust_when:
   - rules forbid brute force
   - target is production-like and no rate limit is approved
+useful_tools:
+  - ffuf
+  - feroxbuster
+  - gobuster
+  - Burp Suite content discovery
+  - HexStrike/security-tool MCP web discovery module
 preflight:
   command: ffuf -V
 minimal_command:

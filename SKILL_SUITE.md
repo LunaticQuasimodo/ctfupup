@@ -41,7 +41,7 @@ Keep the skills together because several references intentionally link to adjace
 - Put long checklists, schemas, and templates in `references/`.
 - Put deterministic checks and renderers in `scripts/`.
 - Do not add large payload dictionaries or copied writeups.
-- Any new tool must gain a ToolCard before becoming part of a standard workflow.
+- New MCP systems, HexStrike-style orchestrators, pentest CLIs, browser plugins, debuggers, decompilers, and scripts may be used whenever they help solve an authorized CTF challenge; add or refine a ToolCard when the pattern becomes repeatable.
 - Any new aggressive action must declare scope, rate, authorization, and evidence handling.
 
 ## Validation

@@ -143,7 +143,7 @@ def check_reference_absorption(root: Path, checks: list[dict]) -> None:
         "Scope gate",
         "deep topic",
         "Runner/tricks/bypass/verdict",
-        "tool whitelist",
+        "tool enablement",
         "EvidenceRecord",
     ])
     audit_ok, audit_missing = has_terms(root, "REFLECTION_AUDIT.md", [
@@ -513,7 +513,7 @@ def check_release_consistency_audit(root: Path, checks: list[dict]) -> None:
     ])
     reflection_ok, reflection_missing = has_terms(root, "REFLECTION_AUDIT.md", [
         "Release consistency audit",
-        "0.38.0",
+        "0.39.0",
     ])
     problems = [f"audit_release_consistency.py missing {item}" for item in script_missing]
     problems.extend(f"suite-manifest missing {item}" for item in manifest_missing)

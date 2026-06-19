@@ -17,15 +17,15 @@
 | Claude Agent Skills | 官方文档 | 跨 agent skills 概念 | 中高 | skills 是模块化能力包，触发后加载 | 平台差异需要安装适配 | `install.sh --codex/--claude` | [Claude Agent Skills](https://platform.claude.com/docs/en/agents-and-tools/agent-skills/overview) | 官方，当前 |
 | src-hunter-skill | GitHub skill | SRC/漏洞挖掘流程 | 高 | checkpoint、scope gate、evidence discipline、按需 playbook | SRC 不等同 CTF；不能照搬真实目标测试流程 | `ctf-master` scope/evidence gates、`ctf-knowledge` 蒸馏 | [src-hunter-skill](https://github.com/MyuriKanao/src-hunter-skill) | 高，用户指定 |
 | yaklang/hack-skills | GitHub skills | 安全知识分层路由 | 高 | master -> category -> deep topic；知识索引化 | 广义攻防知识会造成 CTF 过度动作 | `deep-topic-router.md`、`route_topic.py`、category skills | [yaklang/hack-skills](https://github.com/yaklang/hack-skills) | 高，用户指定 |
-| 本地 red_team_skill | 本地 skill 集 | runner/tricks/bypass/verdict | 高 | 强门禁、工具白名单、结构化 evidence、上下文保护 | 内部业务/反爬假设不适合公共 CTF 直接复用 | ToolCards、`CTFRunState`、handoff/report 分工 | `/Users/bytedance/red_team_skill` | 高，本地实物 |
-| Model Context Protocol | 协议/官方 | 工具/资源/上下文接入 | 高 | 标准化连接工具和数据源 | MCP 可用不等于可信；工具描述可投毒 | `mcp-adapters.md`、工具白名单、安全门禁 | [MCP GitHub](https://github.com/modelcontextprotocol), [MCP auth](https://modelcontextprotocol.io/docs/tutorials/security/authorization) | 官方/生态核心 |
+| 本地 red_team_skill | 本地 skill 集 | runner/tricks/bypass/verdict | 高 | 强门禁、工具编排/preflight、结构化 evidence、上下文保护 | 内部业务/反爬假设不适合公共 CTF 直接复用 | ToolCards、`CTFRunState`、handoff/report 分工；白名单语义改造为工具启用策略 | `/Users/bytedance/red_team_skill` | 高，本地实物 |
+| Model Context Protocol | 协议/官方 | 工具/资源/上下文接入 | 高 | 标准化连接工具和数据源 | MCP 可用不等于可信；工具描述可投毒 | `mcp-adapters.md`、MCP/工具启用策略、证据门禁 | [MCP GitHub](https://github.com/modelcontextprotocol), [MCP auth](https://modelcontextprotocol.io/docs/tutorials/security/authorization) | 官方/生态核心 |
 | NSA MCP Security Design Considerations | 政府安全指南 | MCP 安全设计 | 高 | secure-by-default、实现严谨、验证工具、部署安全 | 面向组织部署，CTF 场景需轻量化 | MCP preflight、最小权限、日志留痕 | [NSA MCP security PDF](https://www.nsa.gov/Portals/75/documents/Cybersecurity/CSI_MCP_SECURITY.pdf?ver=bmgiSbNQLP6Z_GiWtRt6bg%3D%3D) | 高，2026 |
 | OWASP LLM01 Prompt Injection | 安全指南 | 直接/间接 prompt injection | 高 | 外部网页/文件可注入指令；必须隔离数据与指令 | OWASP 是应用安全视角，需转成 CTF artifact 流程 | `ctf-anti-injection`、scan 脚本、fake flag 门禁 | [OWASP LLM01](https://genai.owasp.org/llmrisk/llm01-prompt-injection/) | 高，持续更新 |
 | OWASP Prompt Injection Cheat Sheet | 安全指南 | 防护策略 | 高 | 明确说明自然语言指令和数据混合是核心风险 | 不能幻想完全消除风险 | untrusted-content policy、tool output boundary | [OWASP Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/LLM_Prompt_Injection_Prevention_Cheat_Sheet.html) | 高，当前 |
 | Microsoft indirect prompt injection guidance | 厂商安全实践 | MCP/agent 间接注入 | 中高 | 把外部内容当不可信；降低工具风险 | 厂商实现细节不全部可复用 | 反注入、MCP tool poisoning 检查 | [Microsoft MCP injection blog](https://developer.microsoft.com/blog/protecting-against-indirect-injection-attacks-mcp) | 高，近年 |
 | Chrome DevTools MCP | 官方/GitHub 工具 | 浏览器自动化、DOM/网络/审计 | 高 | 真实浏览器交互、DevTools 证据、Lighthouse | 浏览器状态可能泄露隐私；页面文本不可信 | `browser-workflow.md`、MCP adapter ToolCard | [Chrome DevTools MCP](https://github.com/ChromeDevTools/chrome-devtools-mcp), [Chrome DevTools agents](https://developer.chrome.com/docs/devtools/agents) | 高，活跃 |
 | IDA Pro MCP | GitHub 工具 | 逆向工程 MCP | 中高 | 让 agent 读 IDA 数据库、xref、反编译上下文 | 反编译输出是 hypothesis，不是事实 | `ctf-pwn-rev`、MCP adapter reference | [ida-pro-mcp](https://github.com/mrexodia/ida-pro-mcp) | 中高，工具活跃 |
-| HexStrike AI MCP | GitHub 工具 | 大量安全工具 MCP 编排 | 中 | 展示 MCP 连接安全工具的上限 | 自动化攻击面太大；需要强 scope/rate gate | 工具白名单、不要一口气暴露 150+ 工具 | [hexstrike-ai](https://github.com/0x4m4/hexstrike-ai) | 中，需安全改造 |
+| HexStrike AI MCP | GitHub 工具 | 大量安全工具 MCP 编排 | 中 | 展示 MCP 连接安全工具的上限，适合作为 CTF 安全工具编排入口 | 工具输出和描述仍需按不可信数据处理 | 明确鼓励在授权 CTF/靶场中使用；通过 ToolCard 记录 hypothesis、参数、raw artifact、摘要 | [hexstrike-ai](https://github.com/0x4m4/hexstrike-ai) | 中，需结合本地环境验证 |
 | CTFd MCP Server | GitHub/工具 | CTF 平台接入 | 中 | challenge intake、附件下载、提交 | 自动提交有误用和频率风险 | 未来 `ctf-master`/CTFd adapter | [CTFd MCP server](https://mcpservers.org/servers/tomek7667/ctfd-mcp-server) | 中 |
 | Cybench | Benchmark/论文/代码 | 40 个专业 CTF 任务和 subtasks | 高 | 完整任务 + subtasks，适合评测 agent 能力 | 评测不等于运行流程；仍需技能工程 | v1 benchmark 目标、forward-test 设计 | [Cybench](https://cybench.github.io/), [arXiv](https://arxiv.org/html/2408.08926v2), [GitHub](https://github.com/andyzorigin/cybench) | 高 |
 | NYU CTF Bench | Benchmark/论文/代码 | 200 个 dockerized CSAW 题 | 高 | 多类别、可部署、适合真实端到端验证 | 需要环境成本，不能短路为 synthetic demo | v1 real/benchmark CTF gate | [NYU CTF Bench](https://nyu-llm-ctf.github.io/), [GitHub](https://github.com/NYU-LLM-CTF/NYU_CTF_Bench), [paper](https://arxiv.org/abs/2406.05590) | 高 |
@@ -51,15 +51,15 @@ Agent Skills 已形成“轻量目录 + `SKILL.md` + 可选资源”的通用模
 
 ### 2. MCP 与工具生态
 
-MCP 解决的是工具接入的 N x M 问题：一个标准协议让 agent 接浏览器、IDA、CTFd、文件系统、数据库、代理/抓包、安全工具。但 CTF 场景不能把 MCP 当成“工具越多越好”。Chrome DevTools MCP 可以提供真实浏览器 DOM/网络/控制台证据，但它也能暴露浏览器状态；IDA MCP 能增强逆向上下文，但反编译结果仍然需要动态验证；HexStrike 这类大工具 MCP 证明了编排潜力，也暴露了自动化攻击面过大的风险。
+MCP 解决的是工具接入的 N x M 问题：一个标准协议让 agent 接浏览器、IDA、CTFd、文件系统、数据库、代理/抓包、安全工具。CTF 场景下应主动利用 MCP 和渗透测试工具，而不是因为工具强大就默认收窄。Chrome DevTools MCP 可以提供真实浏览器 DOM/网络/控制台证据；IDA/Ghidra/r2 MCP 能增强逆向上下文；HexStrike 这类大工具 MCP 适合作为安全工具编排入口。需要保留的不是工具限制，而是 evidence、scope、rate、artifact、summary 这些可复现纪律。
 
-因此本报告建议 MCP 采用“adapter + ToolCard + scope gate”模式：
+因此本报告建议 MCP 采用“adapter + ToolCard + evidence gate”模式：
 
-1. MCP 只暴露当前题型需要的最小工具集。
-2. 每个 MCP tool 必须有输入、输出、失败分类、危险操作、压缩策略。
+1. 不对 MCP/HexStrike/安全工具做任意禁用；根据题型和 hypothesis 主动选择最有效工具。
+2. 每个 MCP tool 记录输入、输出、失败分类、影响面、压缩策略。
 3. MCP tool description 和 tool output 都视作不可信内容。
 4. GUI/browser/IDA 输出必须保存原始 artifact，再写摘要。
-5. 任何联网、扫描、提交、外带、写文件动作必须过授权/规则边界。
+5. 任何联网、扫描、提交、OOB、写文件动作都记录授权/规则边界、target、rate、artifact 路径；这是复现要求，不是工具限制。
 
 ### 3. Benchmark 与评测生态
 
@@ -94,7 +94,7 @@ Cybench 和 NYU CTF Bench 都说明 CTF agent 评测不能只看“最终是否�
 每个工具卡必须包含：
 
 - Applies when：什么信号证明需要该工具。
-- Allowed tools：允许的 binary/MCP/script/browser capability。
+- Useful tools：推荐的 binary/MCP/script/browser capability，以及可替换工具。
 - Preflight：版本、依赖、权限、网络、GUI、license 检查。
 - Minimal command：最小可产出证据命令。
 - Failure：tool_not_found、bad_argument、dependency_missing、target_unavailable、scope_or_rate_limit、output_overload、hypothesis_failed。
@@ -235,11 +235,11 @@ CTF 环境 preflight 分为：
 - 网络：VPN、DNS、代理、特定出口、CTFd 可达性、远程端口。
 - OOB/VPS：域名、端口、防火墙、HTTPS、临时文件服务、日志。
 - 本地：Docker/compose、VM、Kali、Windows、Android 模拟器、GPU、GUI、声卡/摄像头。
-- 工具：nmap/ffuf/curl/tshark/binwalk/gdb/pwndbg/radare2/Ghidra/IDA/z3/Sage/hashcat/john/pwntools。
-- MCP：Chrome DevTools、IDA、CTFd、filesystem、database、browser。
+- 工具：nmap/ffuf/feroxbuster/gobuster/sqlmap/curl/tshark/binwalk/gdb/pwndbg/radare2/Ghidra/IDA/z3/Sage/hashcat/john/pwntools/Burp/自定义脚本。
+- MCP：HexStrike/security-tool MCP、Chrome DevTools、IDA/Ghidra/r2、CTFd、filesystem、database、browser。
 - 规则：外网搜索、AI 使用、自动化提交、扫描速率、队伍共享、flag 提交频率。
 
-Fail-closed 原则：拿不到授权、规则、凭据、VPN、license、GUI 或硬件时，输出环境事项清单，不继续误跑。
+环境缺失处理：拿不到授权、规则、凭据、VPN、license、GUI 或硬件时，输出环境事项清单并修复环境；不把这理解为禁止使用对应工具。
 
 ## 评测体系与 Benchmark 方案
 
@@ -283,7 +283,7 @@ Fail-closed 原则：拿不到授权、规则、凭据、VPN、license、GUI 或
 
 - 增加轻量 coordinator：题目状态 DB、artifact store、CTFd adapter、eval dashboard。
 - 允许多 agent 分工，但以 state/evidence 为同步协议。
-- 为高风险 MCP 建立 manifest allowlist、隔离浏览器 profile、只读 reverse session。
+- 为强能力 MCP 建立 manifest inventory、隔离浏览器 profile、challenge-bound reverse session、raw artifact 目录和摘要模板。
 - 形成离线知识包版本管理和 source freshness audit。
 
 ## 风险、限制、合规与安全边界

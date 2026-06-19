@@ -323,13 +323,13 @@
     {
       "id": "REQ-REF-RED-TEAM",
       "source": "user.reference.local-red-team-skill",
-      "requirement": "Absorb runner/tricks/bypass/verdict separation, strong gates, tool whitelist, structured evidence, and context protection from local red_team_skill.",
+      "requirement": "Absorb runner/tricks/bypass/verdict separation, strong gates, tool enablement/preflight, structured evidence, and context protection from local red_team_skill.",
       "priority": "current_gate",
       "status": "covered",
       "evidence": [
         {"path": "REFLECTION_AUDIT.md", "contains": ["Runner/tricks/bypass/verdict", "Structured evidence"]},
         {"path": "skills/ctf-master/references/state-schema.md", "contains": ["EvidenceRecord"]},
-        {"path": "skills/ctf-tool-preflight/references/tool-cards.md", "contains": ["Allowed tools", "Output handling"]}
+        {"path": "skills/ctf-tool-preflight/references/tool-cards.md", "contains": ["Useful tools", "Output handling"]}
       ],
       "notes": "Converted to CTF state, gates, ToolCards, and handoff/report split."
     },
@@ -579,7 +579,7 @@
         {"path": "scripts/validate_suite.py", "contains": ["audit_release_consistency.py", "ctf-release-consistency-audit-v1"]},
         {"path": "scripts/release_gate.py", "contains": ["audit_release_consistency.py"]},
         {"path": "scripts/audit_quality.py", "contains": ["release-consistency-audit"]},
-        {"path": "suite-manifest.json", "contains": ["0.38.0", "release_consistency_audit"]},
+        {"path": "suite-manifest.json", "contains": ["0.39.0", "release_consistency_audit"]},
         {"path": "SKILL_SUITE.md", "contains": ["audit_release_consistency.py", "release drift"]},
         {"path": "tests/test_scripts.py", "contains": ["test_release_consistency_audit_checks_manifest_docs_and_traceability"]}
       ],
@@ -596,7 +596,7 @@
         {"path": "scripts/validate_suite.py", "contains": ["audit_category_coverage.py", "ctf-category-coverage-audit-v1"]},
         {"path": "scripts/release_gate.py", "contains": ["audit_category_coverage.py"]},
         {"path": "scripts/audit_quality.py", "contains": ["category-coverage-audit"]},
-        {"path": "suite-manifest.json", "contains": ["0.38.0", "category_coverage_audit"]},
+        {"path": "suite-manifest.json", "contains": ["0.39.0", "category_coverage_audit"]},
         {"path": "SKILL_SUITE.md", "contains": ["audit_category_coverage.py", "future benchmark gaps"]},
         {"path": "forward-tests/scenarios/reverse-checker-decoy.json", "contains": ["rev.checker", "preflight", "untrusted"]},
         {"path": "tests/test_scripts.py", "contains": ["test_category_coverage_audit_checks_core_and_specialty_coverage"]}
@@ -614,7 +614,7 @@
         {"path": "skills/ctf-master/references/state-schema.md", "contains": ["EvidenceRecord", "raw_artifact", "exit_status", "supports", "contradicts", "risk"]},
         {"path": "skills/ctf-handoff-report/references/writeup-template.md", "contains": ["Evidence References", "Contrast Checks", "Verification"]},
         {"path": "skills/ctf-handoff-report/scripts/render_writeup.py", "contains": ["Evidence References", "Raw Artifacts", "FLAG_RE"]},
-        {"path": "suite-manifest.json", "contains": ["0.38.0", "evidence_contract_audit"]},
+        {"path": "suite-manifest.json", "contains": ["0.39.0", "evidence_contract_audit"]},
         {"path": "tests/test_scripts.py", "contains": ["test_evidence_contract_audit_checks_reproducible_report_contract"]}
       ],
       "notes": "This converts src-hunter evidence discipline and red_team verdict separation into an executable release gate; it does not add exploit payload content."

@@ -100,7 +100,7 @@ def audit_evidence_contract(root: Path) -> dict[str, Any]:
             ],
         }),
         build_check(root, "release-surface-evidence-audit", "Evidence contract audit is part of the release, quality, and traceability surface", {
-            "suite-manifest.json": ["evidence_contract_audit", "0.38.0"],
+            "suite-manifest.json": ["evidence_contract_audit", "0.39.0"],
             "scripts/validate_suite.py": ["audit_evidence_contract.py", "ctf-evidence-contract-audit-v1"],
             "scripts/release_gate.py": ["audit_evidence_contract.py"],
             "scripts/audit_quality.py": ["evidence-contract-audit", "audit_evidence_contract.py"],

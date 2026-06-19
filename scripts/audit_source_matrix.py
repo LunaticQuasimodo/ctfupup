@@ -52,7 +52,7 @@ REQUIRED_SOURCES = {
         "terms": [
             "runner/tricks/bypass/verdict",
             "hard gates",
-            "tool whitelist",
+            "tool enablement",
             "structured evidence",
             "context protection",
             "ctfrunstate",

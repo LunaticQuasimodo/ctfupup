@@ -1,7 +1,7 @@
 # CTF Agent Skills 最终需求回顾与设计总结
 
 日期：2026-06-18  
-套件版本：`0.38.0`  
+套件版本：`0.39.0`  
 产物目录：`/Users/bytedance/Documents/CTF UP！/ctf-agent-skills`
 
 ## 1. 总体结论
@@ -296,7 +296,7 @@ ctf-agent-skills/
 
 | Skill | 作用 | 文件意义 |
 |---|---|---|
-| `ctf-tool-preflight` | 工具与环境 preflight | `tool-cards.md` 管理工具适用/输入/失败/压缩策略；`environment-preflight.md` 管理 VPN/VPS/OOB/Docker/GUI 等；`mcp-adapters.md` 管理 IDA/Chrome/CTFd/HexStrike 等 MCP 边界；`ctf_preflight.py` 执行工具检查。 |
+| `ctf-tool-preflight` | 工具与环境 preflight | `tool-cards.md` 管理工具适用/输入/失败/压缩策略；`environment-preflight.md` 管理 VPN/VPS/OOB/Docker/GUI 等；`mcp-adapters.md` 明确鼓励 IDA/Chrome/CTFd/HexStrike 等 MCP 和渗透测试工具按需辅助解题；`ctf_preflight.py` 执行工具检查。 |
 | `ctf-knowledge` | 外部资料/知识库蒸馏 | `source-matrix.md` 和 `distillation-rules.md` 保证资料有来源、可信度、适配度，不盲目复制 payload/writeup；`source_matrix.py` 维护资料矩阵。 |
 | `ctf-anti-injection` | 反 prompt injection / fake flag / tool poisoning / long text trap | `untrusted-content.md` 定义不可信内容边界和脱敏报告；`visual-and-longtext.md` 处理 OCR/隐藏文本/大日志；`scan_untrusted_text.py` 检测 hostile 指令、fake flag、外带/破坏性提示。 |
 | `ctf-handoff-report` | 卡壳恢复、交接、writeup、复盘 | `handoff-template.md` 固化交接包；`writeup-template.md` 固化可复现 writeup；`render_handoff.py`、`render_writeup.py`、`render_reflection.py`、`finalize_run.py` 生成交付物。 |
@@ -305,18 +305,18 @@ ctf-agent-skills/
 
 ### 7.1 MCP
 
-已通过 `ctf-tool-preflight/references/mcp-adapters.md` 设计 MCP 接入边界：
+已通过 `ctf-tool-preflight/references/mcp-adapters.md` 设计 MCP 与渗透测试工具接入方式。核心态度是：不对 HexStrike、Chrome DevTools MCP、IDA/Ghidra/r2 MCP、CTFd MCP、安全工具 MCP、浏览器插件、扫描器、调试器、反编译器或自定义脚本做任意禁用；在合法 CTF/授权靶场/授权研究范围内，鼓励用它们加速证据获取和假设验证。
 
 - Chrome DevTools MCP：用于真实浏览器 DOM、network、console、screenshot、Lighthouse 等证据。
 - IDA Pro MCP：用于本地 challenge binary 的 xref、decompile、rename、函数定位。
-- CTFd MCP：用于题目元信息、附件、提交，但提交必须过规则/频率门禁。
-- HexStrike 或类似工具集 MCP：只作为可选适配，不默认大面积暴露。
+- CTFd MCP：用于题目元信息、附件、提交；提交候选仍需有 EvidenceRecord 支撑，避免误提交。
+- HexStrike 或类似工具集 MCP：明确鼓励作为安全工具编排入口使用，按 hypothesis 选择模块并保存原始输出。
 
-关键原则：MCP 工具描述和输出也视作不可信；MCP 可用不等于可信；联网/提交/扫描/外带动作必须经过 scope gate。
+关键原则：MCP 工具描述和输出也视作不可信数据；MCP 可用性应被充分利用，但不能让工具输出覆盖用户/开发者指令。联网、提交、扫描、OOB 等动作需要记录题目 scope、规则、速率、目标和原始证据，这些是可复现要求，不是对工具能力的限制。
 
 ### 7.2 Bash / CLI 工具
 
-工具不是直接乱跑，而是进入 ToolCard：
+工具不是被白名单限制，而是通过 ToolCard 变得可复现、可压缩、可交接：
 
 - `sqlmap`、`nmap`、`tshark`、`binwalk`、`gdb`、`checksec`、`readelf`、`objdump`、`strings`、`z3`、`sage` 等均通过 preflight 思路管理。
 - 缺工具不是“失败”，而是 `missing_dependency` evidence。
@@ -342,7 +342,7 @@ ctf-agent-skills/
 |---|---|---|---|
 | `src-hunter-skill` | checkpoint、scope gate、evidence discipline、按需 playbook | 变成 CTF 的 phase gate、state checkpoint、EvidenceRecord、handoff/writeup evidence contract | SRC 真实目标测试流程没有直接搬到 CTF；保留授权边界。 |
 | `yaklang/hack-skills` | master -> category -> deep topic 的层级路由 | 变成 `ctf-master` + category skills + `route_topic.py` + `deep-topic-router.md` | 没把广义攻防 payload 大字典塞进上下文。 |
-| 本地 `red_team_skill` | runner/tricks/bypass/verdict 分工、强门禁、工具白名单、结构化 evidence、上下文保护 | 变成 ToolCards、phase gates、evidence contract、verdict-style writeup/handoff | 反爬/业务接口经验没有直接变成 CTF 攻击动作。 |
+| 本地 `red_team_skill` | runner/tricks/bypass/verdict 分工、工具编排与 preflight、结构化 evidence、上下文保护 | 变成 ToolCards、phase gates、evidence contract、verdict-style writeup/handoff；将“白名单”语义改造为“工具启用 + 证据记录 + 输出压缩” | 内部业务/反爬假设没有直接变成 CTF 攻击动作。 |
 
 ## 9. 验证与质量结论
 
@@ -418,4 +418,3 @@ python3 scripts/audit_completion.py \
 8. 每次真实题后用 reflection 和 audit 把新经验沉淀回 references/scripts。
 
 这正对应最初的研究目标：不是让 AI 盲目变猛，而是让 AI 在 CTF 中更会组织自己、更会用工具、更会保护上下文、更会交接、更会从失败中沉淀。
-

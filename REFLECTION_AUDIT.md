@@ -23,7 +23,7 @@ From local `red_team_skill`:
 
 - Runner/tricks/bypass/verdict separation.
 - Strong gates before conclusions.
-- Tool whitelist and preflight thinking.
+- Tool enablement and preflight thinking: powerful tools are encouraged, while ToolCards capture purpose, inputs, artifacts, and summaries.
 - Structured evidence and raw-output preservation.
 - Context protection against huge tool output.
 - Verdict-style separation: conclusions consume evidence records rather than rerunning or guessing.
@@ -77,7 +77,7 @@ From local `red_team_skill`:
 
 ## Validation Snapshot
 
-Recorded on 2026-06-18 for suite version `0.38.0`.
+Recorded on 2026-06-18 and updated for suite version `0.39.0`.
 
 | Check | Result |
 |---|---|

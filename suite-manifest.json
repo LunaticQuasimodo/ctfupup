@@ -1,6 +1,6 @@
 {
   "name": "ctf-agent-skills",
-  "version": "0.38.0",
+  "version": "0.39.0",
   "purpose": "Evidence-driven Agent skills for legal CTFs, authorized labs, and isolated local challenge solving.",
   "skills": [
     {

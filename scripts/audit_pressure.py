@@ -44,9 +44,9 @@ PRESSURE_CASES = [
         "next_action": "Run the release consistency audit after every new script, validation command, version bump, or traceability change.",
         "evidence": [
             {"path": "scripts/audit_release_consistency.py", "terms": ["ctf-release-consistency-audit-v1", "validation-commands", "traceability-doc-sync"]},
-            {"path": "suite-manifest.json", "terms": ["release_consistency_audit", "0.38.0"]},
+            {"path": "suite-manifest.json", "terms": ["release_consistency_audit", "0.39.0"]},
             {"path": "tests/test_scripts.py", "terms": ["test_release_consistency_audit_checks_manifest_docs_and_traceability"]},
-            {"path": "REFLECTION_AUDIT.md", "terms": ["Release consistency audit", "0.38.0"]},
+            {"path": "REFLECTION_AUDIT.md", "terms": ["Release consistency audit", "0.39.0"]},
         ],
     },
     {

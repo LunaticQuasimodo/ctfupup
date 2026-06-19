@@ -28,8 +28,8 @@ Record:
 1. Fingerprint with safe requests: `curl -i`, browser snapshot, robots/sitemap, JS list, common API docs, visible forms.
 2. Build an endpoint/parameter matrix before payloads.
 3. Establish baseline requests and compare against modified requests.
-4. Use browser automation only when DOM state, cookies, localStorage, JS routing, or visual interaction matters.
-5. Keep scans bounded: prefer focused `ffuf`/`feroxbuster` lists over broad recursive brute force.
+4. Use browser automation, Chrome DevTools MCP, Burp/browser plugins, or custom HTTP scripts whenever DOM state, cookies, localStorage, JS routing, network traces, or visual interaction can speed up the solve.
+5. Use scanners such as `ffuf`, `feroxbuster`, `gobuster`, `nmap`, `sqlmap`, and HexStrike/security-tool MCP modules as needed; record target scope, rate, raw output path, and the hypothesis each scan tests.
 
 ## Vulnerability Routing
 
